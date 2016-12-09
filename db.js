@@ -63,7 +63,19 @@ function checkLogin(username, password, cb){
   });
 }
 
-module.exports = {checkLogin, inserUser};
+function checkUsernameExist(username, cb){
+  var sql = `SELECT * FROM "User" WHERE username = '${username}'`;
+  queryDB(sql, (err, result) => {
+    if(err){
+      return cb('Loi ' + err);
+    }
+    if(result.rows[0]){
+      return cb('Username da ton tai');
+    }
+    cb(undefined);
+  });
+}
+module.exports = {checkLogin, inserUser, checkUsernameExist};
 
 // checkLogin('abcd', '12344', err => {
 //   if(err){
