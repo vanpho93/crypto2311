@@ -63,12 +63,14 @@ function checkLogin(username, password, cb){
   });
 }
 
-checkLogin('abcd', '12344', err => {
-  if(err){
-    return console.log(err);
-  }
-  console.log('Thanh cong');
-});
+module.exports = {checkLogin, inserUser};
+
+// checkLogin('abcd', '12344', err => {
+//   if(err){
+//     return console.log(err);
+//   }
+//   console.log('Thanh cong');
+// });
 
 // inserUser('abcd', '1234', '09213733', '4.jpg', err => {
 //     if(err){
