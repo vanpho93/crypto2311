@@ -66,6 +66,6 @@ app.get('/api/checkUsername/:username', (req, res) => {
 
 app.get('/profile', (req, res) => {
   getUser(req.session.username, (err, result) => {
-    res.send(result);
+    res.render('profile', {result});
   });
 });
