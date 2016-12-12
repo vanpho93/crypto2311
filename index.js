@@ -5,7 +5,7 @@ app.set('views', './views');
 
 
 app.use(express.static('public'));
-var {checkLogin, inserUser, checkUsernameExist, getUser} = require('./db.js');
+var {checkLogin, inserUser, checkUsernameExist, getUser, updateUser} = require('./db.js');
 
 var {middle, sess} = require('./session.js');
 app.use(sess);
@@ -67,5 +67,14 @@ app.get('/api/checkUsername/:username', (req, res) => {
 app.get('/profile', (req, res) => {
   getUser(req.session.username, (err, result) => {
     res.render('profile', {result});
+  });
+});
+
+app.post('/xulyupdate', (req, res) => {
+  upload(req, res, err => {
+    var {username} = req.session;
+    var {password, phone} = req.body;
+    var image = req.file.filename;
+    updateUser(username, phone, image, password, result => res.send('Cap nhat thanh cong'));
   });
 });

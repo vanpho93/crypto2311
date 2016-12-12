@@ -90,7 +90,15 @@ function checkUsernameExist(username, cb){
   });
 }
 
-module.exports = {checkLogin, inserUser, checkUsernameExist, getUser};
+function updateUser(username, phone, image, password, cb){
+  var sql = `UPDATE "User" SET phone='${phone}', password='${encrypt(password)}', image='${image}'
+  WHERE username='${username}'`
+  queryDB(sql, (err, result) => {
+    cb(result);
+  });
+}
+
+module.exports = {checkLogin, inserUser, checkUsernameExist, getUser, updateUser};
 
 // checkLogin('abcd', '12344', err => {
 //   if(err){

@@ -3,7 +3,7 @@ var sess = session({
   secret: 'j^gYTF^3278O((7))',
   resave: false,
   saveUninitialized: true,
-  cookie: {maxAge: 10000}
+  cookie: {maxAge: 100000}
 });
 
 var mang = ['/','/dangnhap', '/dangky', '/xulydangnhap', '/xulydangky'];
