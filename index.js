@@ -5,7 +5,7 @@ app.set('views', './views');
 
 
 app.use(express.static('public'));
-var {checkLogin, inserUser, checkUsernameExist} = require('./db.js');
+var {checkLogin, inserUser, checkUsernameExist, getUser} = require('./db.js');
 
 var {middle, sess} = require('./session.js');
 app.use(sess);
@@ -33,6 +33,7 @@ app.post('/xulydangnhap', (req, res) => {
       return res.send(err);
     }
     req.session.daDangNhap = 1;
+    req.session.username = username;
     res.redirect('giaodich');
   });
 })
@@ -40,6 +41,7 @@ app.post('/xulydangnhap', (req, res) => {
 app.get('/dangky', (req, res) => res.render('dangky'));
 
 var upload = require('./upload.js').getUpload('avatar');
+
 app.post('/xulydangky', (req, res) => {
   upload(req, res, err => {
     var {username, password, phone} = req.body;
@@ -60,4 +62,10 @@ app.get('/api/checkUsername/:username', (req, res) => {
     }
     res.send('Ban co the su dung username nay');
   })
+});
+
+app.get('/profile', (req, res) => {
+  getUser(req.session.username, (err, result) => {
+    res.send(result);
+  });
 });

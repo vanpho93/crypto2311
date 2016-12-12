@@ -65,6 +65,18 @@ function checkLogin(username, password, cb){
   });
 }
 
+function getUser(username, cb){
+  var loi;
+  var sql = `SELECT * FROM "User" WHERE username = '${username}'`;
+  queryDB(sql, (err, result) => {
+    if(err){
+      loi = err;
+      return cb(loi);
+    }
+    cb(loi, result.rows[0]);
+  });
+}
+
 function checkUsernameExist(username, cb){
   var sql = `SELECT * FROM "User" WHERE username = '${username}'`;
   queryDB(sql, (err, result) => {
@@ -78,7 +90,7 @@ function checkUsernameExist(username, cb){
   });
 }
 
-module.exports = {checkLogin, inserUser, checkUsernameExist};
+module.exports = {checkLogin, inserUser, checkUsernameExist, getUser};
 
 // checkLogin('abcd', '12344', err => {
 //   if(err){
