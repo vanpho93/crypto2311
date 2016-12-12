@@ -8,7 +8,9 @@ var config = {
   max: 100,
   idleTimeoutMillis: 1000
 }
+
 var pool = new pg.Pool(config);
+
 var {encrypt, decrypt} = require('./crypto.js');
 
 function queryDB(sql, cb){
@@ -75,6 +77,7 @@ function checkUsernameExist(username, cb){
     cb(undefined);
   });
 }
+
 module.exports = {checkLogin, inserUser, checkUsernameExist};
 
 // checkLogin('abcd', '12344', err => {

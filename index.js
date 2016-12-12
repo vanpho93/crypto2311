@@ -2,13 +2,29 @@ var express  = require('express');
 var app = express();
 app.set('view engine', 'ejs');
 app.set('views', './views');
+
+
 app.use(express.static('public'));
 var {checkLogin, inserUser, checkUsernameExist} = require('./db.js');
+
+var {middle, sess} = require('./session.js');
+app.use(sess);
+app.use(middle);
+
+app.get('/', (req, res) => res.render('home'))
+
 app.use(require('body-parser').urlencoded({extended: false}));
 
 app.listen(3000, () => console.log('Server started'));
 
-app.get('/dangnhap', (req, res) => res.render('home'));
+app.get('/giaodich', (req, res) => res.render('giaodich'));
+
+app.get('/dangnhap', (req, res) => {
+  if(req.session.daDangNhap){
+    return res.redirect('/giaodich');
+  }
+  res.render('dangnhap');
+});
 
 app.post('/xulydangnhap', (req, res) => {
   var {username, password} = req.body;
@@ -16,19 +32,24 @@ app.post('/xulydangnhap', (req, res) => {
     if(err){
       return res.send(err);
     }
-    res.send('Dang nhap thanh cong');
+    req.session.daDangNhap = 1;
+    res.redirect('giaodich');
   });
 })
 
 app.get('/dangky', (req, res) => res.render('dangky'));
 
+var upload = require('./upload.js').getUpload('avatar');
 app.post('/xulydangky', (req, res) => {
-  var {username, password, image, phone} = req.body;
-  inserUser(username, password, phone, image, err => {
-    if(err){
-      return res.send(err);
-    }
-    res.send('Dang ky thanh cong');
+  upload(req, res, err => {
+    var {username, password, phone} = req.body;
+    var image = req.file.filename;
+    inserUser(username, password, phone, image, err => {
+      if(err){
+        return res.send(err);
+      }
+      res.send('Dang ky thanh cong');
+    });
   });
 });
 

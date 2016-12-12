@@ -15,14 +15,14 @@
     <title>Dang nhap</title>
   </head>
   <body>
-    <form action="/xulydangky" method="post">
+    <form action="/xulydangky" method="post" enctype="multipart/form-data">
       <input type="text" name="username" placeholder="username" id="txt-username"/>
       <p id="username-available"></p>
       <input type="password" name="password" placeholder="password"/>
       <br><br>
       <input type="text" name="phone" placeholder="phone"/>
       <br><br>
-      <input type="text" name="image" placeholder="image"/>
+      <input type="file" name="avatar"/>
       <br><br>
       <input type="submit" value="Dang ky"/>
     </form>
