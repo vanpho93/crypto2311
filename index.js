@@ -74,7 +74,11 @@ app.post('/xulyupdate', (req, res) => {
   upload(req, res, err => {
     var {username} = req.session;
     var {password, phone} = req.body;
-    var image = req.file.filename;
+    if(req.file){
+      var image = req.file.filename;
+    }else{
+      var image = req.body.old;
+    }
     updateUser(username, phone, image, password, result => res.send('Cap nhat thanh cong'));
   });
 });
