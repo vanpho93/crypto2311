@@ -42,17 +42,38 @@ app.get('/dangky', (req, res) => res.render('dangky'));
 
 var upload = require('./upload.js').getUpload('avatar');
 
-app.post('/xulydangky', (req, res) => {
-  upload(req, res, err => {
-    var {username, password, phone} = req.body;
-    var image = req.file.filename;
-    inserUser(username, password, phone, image, err => {
-      if(err){
-        return res.send(err);
-      }
-      res.send('Dang ky thanh cong');
+function getUpload(req, res){
+  return new Promise(function(resolve, reject) {
+    upload(req, res, err => {
+      if(err) return reject(err);
+      resolve(req);
     });
   });
+}
+
+app.post('/xulydangky', (req, res) => {
+  // upload(req, res, err => {
+    // var {username, password, phone} = req.body;
+    // var image = req.file.filename;
+  //   inserUser(username, password, phone, image, err => {
+  //     if(err){
+  //       return res.send(err);
+  //     }
+  //     res.send('Dang ky thanh cong');
+  //   });
+  // });
+  getUpload(req, res)
+  .then((req) => {
+    var {username, password, phone} = req.body;
+    var image = req.file.filename;
+    return inserUser(username, password, phone, image);
+  })
+  .then(() => {
+    res.send('Dang ky thanh cong');
+  })
+  .catch((err) => {
+    res.send(err + 'nnn');
+  })
 });
 
 app.get('/api/checkUsername/:username', (req, res) => {

@@ -31,18 +31,29 @@ function queryDB(sql, cb){
   });
 }
 
-function inserUser(username, password, phone, image, cb) {
-  var loi;
-  sql = `INSERT INTO "User"(username, password, phone, image)
-        VALUES ('${username}', '${encrypt(password)}', '${phone}', '${image}')`;
-  queryDB(sql, (err, result) => {
-    if(err){
-      loi = err;
-      return cb(loi);
-    }
-    return cb(loi);
+function inserUser(username, password, phone, image){
+  return new Promise(function(resolve, reject) {
+    sql = `INSERT INTO "User"(username, password, phone, image)
+          VALUES ('${username}', '${encrypt(password)}', '${phone}', '${image}')`;
+    queryDB(sql, (err, result) => {
+      if(err) return reject(err)
+      resolve()
+    });
   });
 }
+
+// function inserUser(username, password, phone, image, cb) {
+//   var loi;
+//   sql = `INSERT INTO "User"(username, password, phone, image)
+//         VALUES ('${username}', '${encrypt(password)}', '${phone}', '${image}')`;
+//   queryDB(sql, (err, result) => {
+//     if(err){
+//       loi = err;
+//       return cb(loi);
+//     }
+//     return cb(loi);
+//   });
+// }
 
 function checkLogin(username, password, cb){
   var loi;
